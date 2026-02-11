@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 
 dataset = []
+np.random.seed(42)
 for i in range(5):
     arr = np.random.uniform(-10000, 10000, 1000000)
     dataset.append(arr)
@@ -89,21 +90,21 @@ def run_experiment():
     results = {name: [] for name in algorithms}
     for index, data in enumerate(dataset):
         arr = data.copy()
-        start = time.time()
+        start = time.perf_counter()
         quick_sort(arr, 0, len(arr)-1)
-        results["QuickSort"].append((time.time() - start)*1000)
+        results["QuickSort"].append((time.perf_counter() - start)*1000)
         arr = data.copy()
-        start = time.time()
+        start = time.perf_counter()
         heap_sort(arr, len(arr))
-        results["HeapSort"].append((time.time() - start)*1000)
+        results["HeapSort"].append((time.perf_counter() - start)*1000)
         arr = data.copy()
-        start = time.time()
+        start = time.perf_counter()
         merge_sort(arr, 0, len(arr)-1)
-        results["MergeSort"].append((time.time() - start)*1000)
+        results["MergeSort"].append((time.perf_counter() - start)*1000)
         arr = data.copy()
-        start = time.time()
+        start = time.perf_counter()
         numpy_sort(arr)
-        results["NumpySort"].append((time.time() - start)*1000)
+        results["NumpySort"].append((time.perf_counter() - start)*1000)
     return results
 def plot(results):
     x = np.arange(1, 11) 
@@ -124,6 +125,15 @@ def plot(results):
     plt.show()
 
 results = run_experiment()
+for i in range(10):
+    print(f"Dataset {i+1}: "
+          f"QuickSort = {results['QuickSort'][i]:.2f}, "
+          f"HeapSort = {results['HeapSort'][i]:.2f}, "
+          f"MergeSort = {results['MergeSort'][i]:.2f}, "
+          f"NumPy = {results['NumpySort'][i]:.2f}")
+print("AVERAGE TIME: ")
+for j in results:
+    print(f"{j}: {np.mean(results[j]):.2f} ms")
 plot(results)
 
 
