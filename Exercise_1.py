@@ -2,16 +2,9 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 
-dataset = []
-np.random.seed(42)
-for i in range(5):
-    arr = np.random.uniform(-10000, 10000, 1000000)
-    dataset.append(arr)
-for i in range(5):
-    arr = np.random.randint(-10000, 10000, 1000000)
-    dataset.append(arr)
-dataset[0] = np.sort(dataset[0])
-dataset[1] = np.sort(dataset[1])[::-1]
+with open('dataset_full.txt', 'r') as f:
+    full_data = np.fromstring(f.read(), sep='\n')
+    dataset = np.split(full_data, 10)
 
 def partition(a, left, right):
     i = left
